@@ -1,6 +1,6 @@
 const { listen } = require('socket.io')
 
-const app = require('epress')()
+const app = require('express')()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const port = process.env.PORT || 3000
