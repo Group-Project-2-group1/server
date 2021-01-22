@@ -22,12 +22,15 @@ io.on('connection', (socket) => {
       if (io.sockets.adapter.rooms[payload].length < 4) {
         socket.join(payload);
         io.to(payload).emit('currentPlayer', io.sockets.adapter.rooms[payload].length)
+        io.to(payload).emit('toRoute', "GameRoom")
       } else {
-        // jangan pindah routing
-        // roomname.push(payload + "1")
-        // socket.join(payload + "1");
+        socket.to(payload).emit('toLobby', "Lobby")
       }
     } 
+  })
+
+  socket.on('addUser', ({ room, payload }) => {
+    io.to(room).emit('addUser', payload)
   })
 
   socket.on('addPlayer', (payload) => {
@@ -35,10 +38,18 @@ io.on('connection', (socket) => {
     socket.emit('username', player)
   })
 
+  socket.on('start', ({ room, payload }) => {
+    io.to(room).emit('start', payload)
+  })
+
+  socket.on('changeStart', ({ room, payload }) => {
+    io.to(room).emit('changeStart', payload)
+  })
+
   socket.on('attack', ({ room, payload }) => {
     console.log(room, payload);
     io.to(room).emit('currentHp', payload)
-    socket.emit('myScore', payload)
+    socket.emit('myScore', 1)
     socket.emit('init', payload)
   })
 })
