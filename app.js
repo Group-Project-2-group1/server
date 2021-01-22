@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
         io.to(payload).emit('currentPlayer', io.sockets.adapter.rooms[payload].length)
         io.to(payload).emit('toRoute', "GameRoom")
       } else {
-        socket.to(payload).emit('toLobby', "Lobby")
+        socket.emit('toLobby', { path: '/' })
       }
     } 
   })
